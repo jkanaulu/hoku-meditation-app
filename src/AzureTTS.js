@@ -7,17 +7,13 @@ export async function speakWithAzure(text) {
       body: JSON.stringify({ text })
     });
 
-    if (!res.ok) {
-      throw new Error("Azure TTS failed: " + res.status);
-    }
+    if (!res.ok) throw new Error("Azure TTS failed: " + res.status);
 
-    // Backend returns raw base64 string (NOT JSON)
-    const base64Audio = await res.text();
+    // Function returns raw base64
+    const base64 = await res.text();
 
-    // Create audio object (MP3 output from Azure)
-    const audio = new Audio("data:audio/mp3;base64," + base64Audio);
-
-    audio.play();
+    const audio = new Audio("data:audio/mp3;base64," + base64);
+    await audio.play();
   } catch (err) {
     console.error("Azure speech function error:", err);
   }
