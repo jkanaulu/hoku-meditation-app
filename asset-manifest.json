@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hoku-meditation-app/static/css/main.e067e84c.css",
+    "main.js": "/hoku-meditation-app/static/js/main.1886850d.js",
+    "static/js/453.57d0e536.chunk.js": "/hoku-meditation-app/static/js/453.57d0e536.chunk.js",
+    "index.html": "/hoku-meditation-app/index.html",
+    "main.e067e84c.css.map": "/hoku-meditation-app/static/css/main.e067e84c.css.map",
+    "main.1886850d.js.map": "/hoku-meditation-app/static/js/main.1886850d.js.map",
+    "453.57d0e536.chunk.js.map": "/hoku-meditation-app/static/js/453.57d0e536.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e067e84c.css",
+    "static/js/main.1886850d.js"
+  ]
+}
