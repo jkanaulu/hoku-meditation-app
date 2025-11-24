@@ -1,24 +1,6 @@
 // src/AIService.js
 import axios from "axios";
 
-console.log("ENV CHECK:", {
-  openai: process.env.REACT_APP_OPENAI_KEY
-    ? process.env.REACT_APP_OPENAI_KEY.slice(0, 10) + "..."
-    : "undefined",
-
-  azureKey: process.env.REACT_APP_AZURE_SPEECH_KEY
-    ? process.env.REACT_APP_AZURE_SPEECH_KEY.slice(0, 6) + "..."
-    : "undefined",
-
-  azureRegion: process.env.REACT_APP_AZURE_REGION || "undefined"
-});
-
-// Read API key safely from environment
-const API_KEY = process.env.REACT_APP_OPENAI_KEY;
-
-// OpenAI chat completions endpoint
-const API_URL = "https://api.openai.com/v1/chat/completions";
-
 // ---------- SYSTEM PROMPT ----------
 export const systemPrompt = `
 SAFETY FIRST:
@@ -67,29 +49,14 @@ Style & Closing:
 // ---------- GENERATE MEDITATION SCRIPT ----------
 export async function generateMeditationScript(userInput) {
   try {
-    const response = await axios.post(
-      API_URL,
-      {
-        model: "gpt-4-turbo",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userInput }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
+    const response = await axios.post("/.netlify/functions/meditate", {
+      userInput,
+      systemPrompt
+    });
 
-    return response.data.choices[0].message.content;
+    return response.data.script;
   } catch (error) {
-    console.error(
-      "Error calling OpenAI API:",
-      error.response ? error.response.data : error.message
-    );
+    console.error("Error calling meditation function:", error);
     return "Sorry, there was a problem generating your meditation session. Please try again.";
   }
 }
