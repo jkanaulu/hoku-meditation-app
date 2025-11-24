@@ -1,4 +1,3 @@
-// netlify/functions/speech.js
 import axios from "axios";
 
 export const handler = async (event) => {
@@ -9,17 +8,19 @@ export const handler = async (event) => {
     const key = process.env.AZURE_SPEECH_KEY;
 
     const ssml = `
-      <speak version="1.0" xml:lang="en-US">
+      <speak version="1.0" xml:lang="en-US" xmlns:mstts="https://www.w3.org/2001/mstts">
         <voice name="en-US-NancyNeural">
-          <prosody rate="-10%" pitch="0%" volume="medium">
-            ${text}
-          </prosody>
+          <mstts:express-as style="whispering">
+            <prosody rate="-10%" pitch="0%" volume="medium">
+              ${text}
+            </prosody>
+          </mstts:express-as>
         </voice>
       </speak>
     `;
 
     const response = await axios.post(
-      `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`,
+      \`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1\`,
       ssml,
       {
         headers: {
