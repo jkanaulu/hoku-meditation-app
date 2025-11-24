@@ -1,16 +1,22 @@
 // src/AzureTTS.js
 
-import axios from "axios";
-
 export async function speakWithAzure(text) {
   try {
-    const response = await axios.post("/.netlify/functions/speech", {
-      text
+    const res = await fetch("/.netlify/functions/speech", {
+      method: "POST",
+      body: JSON.stringify({ text })
     });
 
-    // The function returns a base64 audio buffer
-    const audioBase64 = response.data.audio;
-    const audio = new Audio("data:audio/wav;base64," + audioBase64);
+    if (!res.ok) {
+      throw new Error("Azure TTS failed: " + res.status);
+    }
+
+    // Backend returns raw base64 string (NOT JSON)
+    const base64Audio = await res.text();
+
+    // Create audio object (MP3 output from Azure)
+    const audio = new Audio("data:audio/mp3;base64," + base64Audio);
+
     audio.play();
   } catch (err) {
     console.error("Azure speech function error:", err);
